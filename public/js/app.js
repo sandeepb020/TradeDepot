@@ -3611,9 +3611,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      orders: [],
+      currentpage: 1,
+      pagesize: 25,
+      orderpage: []
+    };
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
+    this.getOrders();
+  },
+  computed: {
+    datas: function datas() {}
+  },
+  methods: {
+    paginateorders: function paginateorders(val) {
+      var start = val == 1 ? 0 : (val - 1) * this.pagesize;
+      this.orderpage = this.orders.slice(start, val * this.pagesize);
+      console.log(this.orderpage);
+    },
+    getOrders: function getOrders() {
+      var _this = this;
+
+      axios.get('api/orders').then(function (response) {
+        console.log(response.data.data);
+        _this.orders = response.data.data;
+
+        _this.paginateorders(1);
+      });
+    },
+    handleCurrentChange: function handleCurrentChange(val) {
+      console.log(val);
+      this.paginateorders(val);
+    }
   }
 });
 
@@ -101087,110 +101131,80 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        _c(
-          "div",
-          { staticClass: "card" },
-          [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Home Component")
-            ]),
-            _vm._v(" "),
-            _c(
-              "el-row",
-              [
-                _c("el-button", [_vm._v("Default")]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "primary" } }, [
-                  _vm._v("Primary")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "success" } }, [
-                  _vm._v("Success")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "info" } }, [_vm._v("Info")]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "warning" } }, [
-                  _vm._v("Warning")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "danger" } }, [
-                  _vm._v("Danger")
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "el-row",
-              [
-                _c("el-button", { attrs: { plain: "" } }, [_vm._v("Plain")]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "primary", plain: "" } }, [
-                  _vm._v("Primary")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "success", plain: "" } }, [
-                  _vm._v("Success")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "info", plain: "" } }, [
-                  _vm._v("Info")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "warning", plain: "" } }, [
-                  _vm._v("Warning")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "danger", plain: "" } }, [
-                  _vm._v("Danger")
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "el-row",
-              [
-                _c("el-button", { attrs: { round: "" } }, [_vm._v("Round")]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "primary", round: "" } }, [
-                  _vm._v("Primary")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "success", round: "" } }, [
-                  _vm._v("Success")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "info", round: "" } }, [
-                  _vm._v("Info")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "warning", round: "" } }, [
-                  _vm._v("Warning")
-                ]),
-                _vm._v(" "),
-                _c("el-button", { attrs: { type: "danger", round: "" } }, [
-                  _vm._v("Danger")
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                        I'm a Home component.\n                    "
-              )
-            ])
-          ],
-          1
-        )
-      ])
-    ])
-  ])
+  return _c(
+    "el-container",
+    [
+      _c("el-header", [
+        _c("h2", { staticClass: "text-center mt-2" }, [
+          _vm._v("Trade Depot - Orders")
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "el-main",
+        [
+          _c(
+            "el-table",
+            {
+              staticStyle: { width: "100%" },
+              attrs: { data: _vm.orderpage, border: "" }
+            },
+            [
+              _c("el-table-column", {
+                attrs: {
+                  prop: "CustomerID",
+                  label: "Customer ID",
+                  width: "180"
+                }
+              }),
+              _vm._v(" "),
+              _c("el-table-column", {
+                attrs: {
+                  prop: "RefNumber",
+                  label: "Reference No",
+                  width: "180"
+                }
+              }),
+              _vm._v(" "),
+              _c("el-table-column", {
+                attrs: { prop: "Status", label: "Status", width: "180" }
+              }),
+              _vm._v(" "),
+              _c("el-table-column", {
+                attrs: {
+                  prop: "TotalAmount",
+                  label: "Total Amount",
+                  width: "180"
+                }
+              }),
+              _vm._v(" "),
+              _c("el-table-column", {
+                attrs: {
+                  prop: "TxnDate",
+                  label: "Transaction Date",
+                  width: "180"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("el-pagination", {
+            attrs: {
+              background: "",
+              layout: "prev, pager, next",
+              "hide-on-single-page": true,
+              "page-size": _vm.pagesize,
+              total: _vm.orders.length
+            },
+            on: { "current-change": _vm.handleCurrentChange }
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -113435,8 +113449,12 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_0___default.a);
-Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_0__["Button"]);
+Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_0__["Container"]);
+Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_0__["Header"]);
+Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_0__["Main"]);
+Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_0__["Table"]);
 Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_0__["Select"]);
+Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_0__["Pagination"]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

@@ -1,49 +1,94 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Home Component</div>
-<el-row>
-  <el-button>Default</el-button>
-  <el-button type="primary">Primary</el-button>
-  <el-button type="success">Success</el-button>
-  <el-button type="info">Info</el-button>
-  <el-button type="warning">Warning</el-button>
-  <el-button type="danger">Danger</el-button>
-</el-row>
+<el-container>
+  <el-header>
+  <h2 class="text-center mt-2">Trade Depot - Orders</h2>
+  </el-header>
+  <el-main>
+   <el-table
+        :data="orderpage"
+        border
+        style="width: 100%">
+        <el-table-column
+        prop="CustomerID"
+        label="Customer ID"
+        width="180">
+        </el-table-column>
 
-<el-row>
-  <el-button plain>Plain</el-button>
-  <el-button type="primary" plain>Primary</el-button>
-  <el-button type="success" plain>Success</el-button>
-  <el-button type="info" plain>Info</el-button>
-  <el-button type="warning" plain>Warning</el-button>
-  <el-button type="danger" plain>Danger</el-button>
-</el-row>
+        <el-table-column
+        prop="RefNumber"
+        label="Reference No"
+        width="180">
+        </el-table-column>
 
-<el-row>
-  <el-button round>Round</el-button>
-  <el-button type="primary" round>Primary</el-button>
-  <el-button type="success" round>Success</el-button>
-  <el-button type="info" round>Info</el-button>
-  <el-button type="warning" round>Warning</el-button>
-  <el-button type="danger" round>Danger</el-button>
-</el-row>
+        <el-table-column
+        prop="Status"
+        label="Status"
+        width="180">
+        </el-table-column>
 
-                    <div class="card-body">
-                        I'm a Home component.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <el-table-column
+        prop="TotalAmount"
+        label="Total Amount"
+        width="180">
+        </el-table-column>
+
+        <el-table-column
+        prop="TxnDate"
+        label="Transaction Date"
+        width="180">
+        </el-table-column>
+    </el-table>
+    <el-pagination
+  background
+  layout="prev, pager, next"
+  @current-change="handleCurrentChange"
+        :hide-on-single-page="true"
+        :page-size="pagesize"
+        :total="orders.length">
+</el-pagination>
+
+  </el-main>
+</el-container>
 </template>
 
 <script>
     export default {
+        data() {
+      return {
+        orders:[],
+        currentpage:1,
+        pagesize:25,
+        orderpage:[]
+      }
+    },
         mounted() {
-            console.log('Component mounted.')
-        }
+            console.log('Component mounted.');
+            this.getOrders();
+        },
+        computed: {
+        datas: function () {
+
+    }
+  },
+        methods: {
+        paginateorders: function(val){
+            let start = val == 1 ? 0 : (val - 1) * this.pagesize;
+            this.orderpage = this.orders.slice(start, val*this.pagesize);
+            console.log(this.orderpage)
+        },
+        getOrders: function () {
+        axios
+      .get('api/orders')
+      .then(response => {
+      console.log(response.data.data)
+      this.orders = response.data.data;
+            this.paginateorders(1)
+      })
+    },
+    handleCurrentChange(val) {
+    console.log(val)
+        this.paginateorders(val)
+    },
+  }
     }
 </script>
