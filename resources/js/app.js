@@ -6,9 +6,10 @@
 
 require('./bootstrap');
 
-import ElementUI, { Container, Header, Main, Pagination, Table } from 'element-ui';
+import ElementUI, { Container, Dialog, Header, Main, Pagination, Table } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { Button, Select } from 'element-ui';
+import Vue from 'vue';
 window.Vue = require('vue');
 Vue.use(ElementUI);
 Vue.use(Container);
@@ -17,6 +18,7 @@ Vue.use(Main);
 Vue.use(Table)
 Vue.use(Select)
 Vue.use(Pagination);
+Vue.use(Dialog);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

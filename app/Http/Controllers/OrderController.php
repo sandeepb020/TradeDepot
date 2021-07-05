@@ -26,9 +26,21 @@ class OrderController extends Controller
         }
         $results = $response->getBody()->getContents();
 
-        $resultJSON = json_decode($results);
 
-        return response()->json(["success"=>true, "data" => $resultJSON]);
+        $resultJSON = json_decode($results,true);
+
+        $updatedJSON = array();
+
+        foreach ($resultJSON as $key => $value)
+        {
+            if($value["Status"] == 'fully_invoiced') {
+                $value["Status"] = "Fully Invoiced";
+            }
+            $value["TotalAmount"] = number_format((float)$value["TotalAmount"], 2, '.', '');
+            $updatedJSON[] = ["RefNumber"=>$value["RefNumber"],"TxnDate"=>$value["TxnDate"],"TotalAmount"=>$value["TotalAmount"],"CustomerID"=>$value["CustomerID"],"Status"=>$value["Status"]];
+        }
+
+        return response()->json(["success"=>true, "data" => $updatedJSON]);
     }
 
     /**
