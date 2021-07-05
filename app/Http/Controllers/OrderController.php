@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use GuzzleHttp\Client;
 
 class OrderController extends Controller
 {
@@ -13,7 +15,20 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+
+        $APIUrl = "https://dev02.performance.tradedepot.co.nz/api/orders/list";
+        $client = new Client();
+        $response = $client->request('GET', $APIUrl);
+
+        if($response->getStatusCode() != 200)
+        {
+            return response()->json(["success"=>false, "data" => []]);
+        }
+        $results = $response->getBody()->getContents();
+
+        $resultJSON = json_decode($results);
+
+        return response()->json(["success"=>true, "data" => $resultJSON]);
     }
 
     /**
