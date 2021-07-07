@@ -3659,6 +3659,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3673,9 +3675,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     console.log('Component mounted.');
     this.getOrders();
-  },
-  computed: {
-    datas: function datas() {}
   },
   methods: {
     paginateorders: function paginateorders(val) {
@@ -3697,6 +3696,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('api/orders').then(function (response) {
+        console.log(response);
         console.log(response.data.data);
         _this.orders = response.data.data;
 
@@ -10013,7 +10013,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.el-row {\n    text-align: center;\n    margin-top: 10px;\n}\n.boxAmount {\n    background: red;\n    color: #fff;\n}\n.boxStatus {\n}\n.boxDate {\n    background: black;\n    color: #fff;\n}\n", ""]);
+exports.push([module.i, "\n.el-row {\n    text-align: center;\n    margin-top: 10px;\n}\n.boxAmount {\n    background: red;\n    color: #fff;\n}\n.boxDate {\n    background: black;\n    color: #fff;\n}\n", ""]);
 
 // exports
 

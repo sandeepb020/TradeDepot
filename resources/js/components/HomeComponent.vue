@@ -41,6 +41,7 @@
         min-width="20">
         </el-table-column>
     </el-table>
+
     <el-row>
     <el-pagination
         background
@@ -51,6 +52,7 @@
         :total="orders.length">
     </el-pagination>
     </el-row>
+
 <el-dialog title="Order Details" :visible.sync="dialogTableVisible">
 <el-row :gutter="12">
   <el-col :span="12">
@@ -104,11 +106,6 @@
             console.log('Component mounted.');
             this.getOrders();
         },
-        computed: {
-        datas: function () {
-
-        }
-        },
         methods: {
         paginateorders: function(val){
             let start = val == 1 ? 0 : (val - 1) * this.pagesize;
@@ -124,6 +121,7 @@
         axios
         .get('api/orders')
         .then(response => {
+        console.log(response);
         console.log(response.data.data)
         this.orders = response.data.data;
         this.paginateorders(1)
@@ -135,7 +133,7 @@
       this.rowdata = row;
     },
     handleCurrentChange(val) {
-    console.log(val)
+        console.log(val)
         this.paginateorders(val)
     },
   }
@@ -150,10 +148,6 @@
 .boxAmount {
     background: red;
     color: #fff;
-}
-
-.boxStatus {
-
 }
 
 .boxDate {

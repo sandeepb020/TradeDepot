@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use GuzzleHttp\Client;
+use Illuminate\Support\Collection;
 
 class OrderController extends Controller
 {
@@ -29,16 +30,32 @@ class OrderController extends Controller
 
         $resultJSON = json_decode($results,true);
 
-        $updatedJSON = array();
+        // print_r($resultJSON);
 
-        foreach ($resultJSON as $key => $value)
-        {
-            if($value["Status"] == 'fully_invoiced') {
-                $value["Status"] = "Fully Invoiced";
+        $collection = collect($resultJSON);
+
+
+        $updatedJSON = $collection->map(function ($item, $key) {
+            if($item["Status"] == 'fully_invoiced') {
+                $item["Status"] = "Fully Invoiced";
             }
-            $value["TotalAmount"] = number_format((float)$value["TotalAmount"], 2, '.', '');
-            $updatedJSON[] = ["RefNumber"=>$value["RefNumber"],"TxnDate"=>$value["TxnDate"],"TotalAmount"=>$value["TotalAmount"],"CustomerID"=>$value["CustomerID"],"Status"=>$value["Status"]];
-        }
+
+            $item["TotalAmount"] = number_format((float)$item["TotalAmount"], 2, '.', '');
+            return $item;
+        });
+
+
+
+        // $updatedJSON = array();
+
+        // foreach ($resultJSON as $key => $value)
+        // {
+        //     if($value["Status"] == 'fully_invoiced') {
+        //         $value["Status"] = "Fully Invoiced";
+        //     }
+        //     $value["TotalAmount"] = number_format((float)$value["TotalAmount"], 2, '.', '');
+        //     $updatedJSON[] = ["RefNumber"=>$value["RefNumber"],"TxnDate"=>$value["TxnDate"],"TotalAmount"=>$value["TotalAmount"],"CustomerID"=>$value["CustomerID"],"Status"=>$value["Status"]];
+        // }
 
         return response()->json(["success"=>true, "data" => $updatedJSON]);
     }
